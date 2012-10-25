@@ -15,5 +15,10 @@
         "php": ">=5.3.0",
         "zendframework/zendframework": "2.*",
         "twig/twig": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "ApptTwig": "src/"
+        }
     }
 }
