@@ -5,6 +5,7 @@ use Zend\ServiceManager\AbstractPluginManager;
 use ApptTwig\TwigRenderer;
 use Twig_ExtensionInterface;
 use ApptTwig\Extension\Exception\InvalidHelperException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 
 /**
  * Allow manage Twig extensions.
@@ -29,7 +30,11 @@ class ExtensionPluginManager extends AbstractPluginManager
 
         $twig = $renderer->getEngine();
         foreach ( $extensions as $extension ) {
-            $twig->addExtension($this->get($extension));
+            try {
+                $twig->addExtension($this->get($extension));
+            } catch(ServiceNotCreatedException $e) {
+                throw new InvalidHelperException("Can't create extension with name \"$extension\"");
+            }
         }
     }
 

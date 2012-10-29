@@ -43,6 +43,21 @@ class ExtensionPluginManagerTest extends PHPUnit_Framework_TestCase
         $manager->addExtensions($this->renderer);
     }
 
+    public function testBadExtensionConfig()
+    {
+        $this->setExpectedException('ApptTwig\Extension\Exception\InvalidHelperException', 'Can\'t create extension with name');
+
+        $config = new Config(array(
+            'factories' => array(
+                ''
+            )
+        ));
+
+        $manager = new ExtensionPluginManager($config);
+
+        $manager->addExtensions($this->renderer);
+    }
+
     public function testAddExtensions()
     {
         require_once '_stubs/Extension/ApptTwigTestExtension.php';
