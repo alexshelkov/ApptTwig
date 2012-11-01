@@ -39,10 +39,12 @@ class Module implements
         $app = $e->getTarget();
         $locator = $app->getServiceManager();
 
-        $view = $locator->get('View');
-        $twigStrategy = $locator->get('appt.twig.renderer_strategy');
+        if ( $locator->has('View') ) {
+            $view = $locator->get('View');
+            $twigStrategy = $locator->get('appt.twig.renderer_strategy');
 
-        $view->getEventManager()->attach($twigStrategy, 100);
+            $view->getEventManager()->attach($twigStrategy, 100);
+        }
     }
 
     /**
