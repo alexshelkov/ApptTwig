@@ -55,6 +55,35 @@ class ZendViewHelpersTest extends PHPUnit_Framework_TestCase
         $this->assertRegExp('#Zend view helpers &lt;br&gt;#s', $this->renderer->render('zend_view_helpers'));
     }
 
+    public function testBadServiceManagerZendViewHelpersFactory()
+   {
+        $sm = new ServiceManager(new Config(array(
+            'factories' => array (
+                'ZendViewHelpers' => 'ApptTwig\Service\Extension\ZendViewHelpersFactory'
+            )
+        )));
+
+        $e = null;
+        try {
+            $sm->get('ZendViewHelpers');
+        } catch (\Exception $e) {}
+
+        $this->assertSame(
+            'Zend\ServiceManager\Exception\ServiceNotCreatedException',
+            get_class($e)
+        );
+
+        $this->assertNotNull($e->getPrevious());
+        $this->assertSame(
+            'ApptTwig\Service\Exception\InvalidArgumentException',
+            get_class($e->getPrevious())
+        );
+        $this->assertContains(
+            'Expect ApptTwig\ExtensionPluginManager as Service Locator got',
+            $e->getPrevious()->getMessage()
+        );
+   }
+
     public function testZendViewHelpersFactory()
     {
         $sm = new ServiceManager(new Config(array(
