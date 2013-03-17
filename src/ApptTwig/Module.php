@@ -78,6 +78,7 @@ class Module implements
                 'appt.twig.renderer' => 'ApptTwig\Service\TwigRendererFactory',
                 'appt.twig.renderer_strategy' => 'ApptTwig\Service\TwigRendererStrategyFactory',
                 'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
+                'appt.twig.extension_manager' => 'ApptTwig\Service\ExtensionManagerFactory',
             )
         );
     }

@@ -26,6 +26,7 @@ class TwigRendererStrategyFactoryTest extends PHPUnit_Framework_TestCase
                 },
                 'appt.twig.renderer' => 'ApptTwig\Service\TwigRendererFactory',
                 'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
+                'appt.twig.extension_manager' => 'ApptTwig\Service\ExtensionManagerFactory',
             )
         )));
 

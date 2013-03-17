@@ -3,18 +3,9 @@ namespace ApptTwig\Service;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\Config;
 
 use ApptTwig\TwigRenderer;
-
-use ApptTwig\TwigResolver;
-
-use Zend\View\Resolver\TemplatePathStack;
-use Zend\View\Resolver\TemplateMapResolver;
-
 use ApptTwig\Service\Option\ApptTwig;
-
-use ApptTwig\ExtensionPluginManager;
 
 /**
  * Create renderer.
@@ -39,8 +30,7 @@ class TwigRendererFactory implements FactoryInterface
 
         $twigRenderer->setHelperPluginManager($serviceLocator->get('ViewHelperManager'));
 
-        $extensionPluginManager = new ExtensionPluginManager(new Config($options->getExtensionManager()));
-        $extensionPluginManager->setServiceLocator($serviceLocator);
+        $extensionPluginManager = $serviceLocator->get('appt.twig.extension_manager');
         $extensionPluginManager->addExtensions($twigRenderer);
 
         return $twigRenderer;

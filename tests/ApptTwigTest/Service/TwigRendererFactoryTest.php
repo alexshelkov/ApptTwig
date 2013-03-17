@@ -20,6 +20,7 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
         $sm = new ServiceManager(new Config(array(
             'factories' => array (
                 'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
+                'appt.twig.extension_manager' => 'ApptTwig\Service\ExtensionManagerFactory',
                 'ViewHelperManager' => function() {
                     return new HelperPluginManager;
                 },
@@ -42,6 +43,7 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
         $sm = new ServiceManager(new Config(array(
             'factories' => array (
                 'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
+                'appt.twig.extension_manager' => 'ApptTwig\Service\ExtensionManagerFactory',
                 'ViewHelperManager' => function() {
                     return new HelperPluginManager;
                 },
@@ -83,6 +85,7 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
         $sm = new ServiceManager(new Config(array(
             'factories' => array (
                 'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
+                'appt.twig.extension_manager' => 'ApptTwig\Service\ExtensionManagerFactory',
                 'ViewHelperManager' => function() {
                     return new HelperPluginManager;
                 },
