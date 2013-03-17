@@ -1,6 +1,7 @@
 <?php
 namespace ApptTwig\Extension;
 
+use Twig_SimpleFunction;
 use Twig_Function_Method;
 use Twig_Extension;
 
@@ -52,7 +53,7 @@ class ZendViewHelpers extends Twig_Extension
         $functions = array();
         foreach ( $services  as $serviceName ) {
             // register ApptTwig function method as $serviceName
-            $functions[$serviceName] =  new Twig_Function_Method($this, $serviceName);
+            $functions[$serviceName] =  new Twig_Function_Method($this, $serviceName, array('is_safe' => array('html')));
         }
 
         return $functions;
@@ -78,8 +79,12 @@ class ZendViewHelpers extends Twig_Extension
      */
     public function __call($name, $args)
     {
-        $service = $this->getHelpers()->get($name);
+        $helper = $this->getHelpers()->get($name);
 
-        return call_user_func_array(array($service, '__invoke'), $args);
+        if ( is_callable($helper) ) {
+            return call_user_func_array($helper, $args);
+        } else {
+            return $helper;
+        }
     }
 }

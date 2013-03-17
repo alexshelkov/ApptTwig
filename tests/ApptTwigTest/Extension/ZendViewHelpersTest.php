@@ -11,6 +11,7 @@ use Zend\View\Resolver\TemplatePathStack;
 
 use ApptTwig\Extension\ZendViewHelpers;
 use Zend\View\HelperPluginManager;
+use Zend\View\Model\ViewModel;
 
 class ZendViewHelpersTest extends PHPUnit_Framework_TestCase
 {
@@ -34,10 +35,11 @@ class ZendViewHelpersTest extends PHPUnit_Framework_TestCase
 
     public function testAddFunctionsAsHelpers()
     {
+        $helpers = $this->renderer->getHelperPluginManager();
+
         $config = new Config(array(
             'factories' => array(
-                'ZendViewHelpers' => function() {
-                    $helpers = new HelperPluginManager();
+                'ZendViewHelpers' => function() use ($helpers) {
                     $zendViewHelpers = new ZendViewHelpers;
                     $zendViewHelpers->setHelpers($helpers);
 
@@ -52,7 +54,52 @@ class ZendViewHelpersTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotNull($this->renderer->getEngine()->getExtension('ZendViewHelpers'));
 
-        $this->assertRegExp('#Zend view helpers &lt;br&gt;#s', $this->renderer->render('zend_view_helpers'));
+        $this->assertContains('Zend view helpers &lt;br&gt;', $this->renderer->render('zend_view_helpers'));
+    }
+
+    public function testSafeHtml()
+    {
+        $helpers = $this->renderer->getHelperPluginManager();
+
+        $config = new Config(array(
+            'factories' => array(
+                'ZendViewHelpers' => function () use ($helpers) {
+                    $zendViewHelpers = new ZendViewHelpers;
+                    $zendViewHelpers->setHelpers($helpers);
+
+                    return $zendViewHelpers;
+                },
+            )
+        ));
+
+        $manager = new ExtensionPluginManager($config);
+        $manager->addExtensions($this->renderer);
+
+        $this->assertContains('Zend view helpers <title>test</title>', $this->renderer->render('zend_view_helpers_safe_html'));
+    }
+
+    public function testNotCallableAsHelper()
+    {
+        $helpers = $this->renderer->getHelperPluginManager();
+
+        $config = new Config(array(
+            'factories' => array(
+                'ZendViewHelpers' => function () use($helpers) {
+                    $zendViewHelpers = new ZendViewHelpers;
+                    $zendViewHelpers->setHelpers($helpers);
+
+                    return $zendViewHelpers;
+                },
+            )
+        ));
+
+        $manager = new ExtensionPluginManager($config);
+        $manager->addExtensions($this->renderer);
+
+        $model = new ViewModel();
+        $model->setTemplate('zend_view_helpers_not_callable');
+
+        $this->assertContains('Zend view helpers zend_view_helpers_not_callable', $this->renderer->render($model));
     }
 
     public function testBadServiceManagerZendViewHelpersFactory()
@@ -105,7 +152,7 @@ class ZendViewHelpersTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotNull($this->renderer->getEngine()->getExtension('ZendViewHelpers'));
 
-        $this->assertRegExp('#Zend view helpers &lt;br&gt;#s', $this->renderer->render('zend_view_helpers'));
+        $this->assertContains('Zend view helpers &lt;br&gt;', $this->renderer->render('zend_view_helpers'));
     }
 
 }
