@@ -138,6 +138,15 @@ class TwigRendererTest extends PHPUnit_Framework_TestCase
         $this->assertSame($this->renderer->plugin('escapeHtml'), $plugins->get('escapeHtml'));
     }
 
+    public function testHelperProxy()
+    {
+        $plugins = $this->renderer->getHelperPluginManager();
+        $this->assertSame($this->renderer->viewModel(), $plugins->get('ViewModel'));
+
+        $plugins = $this->renderer->getHelperPluginManager();
+        $this->assertSame($this->renderer->escapeHtml('<br>'), $plugins->get('escapeHtml')->__invoke('<br>'));
+    }
+
     /**
      * @group view-model
      */

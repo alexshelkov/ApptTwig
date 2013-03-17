@@ -6,6 +6,7 @@ use Zend\View\Model\ModelInterface;
 use Zend\View\Renderer\RendererInterface;
 use Zend\View\Resolver\ResolverInterface;
 use Zend\View\Variables;
+use Zend\View\Helper\AbstractHelper;
 
 use Twig_Environment;
 use Twig_LoaderInterface;
@@ -194,6 +195,30 @@ class TwigRenderer implements RendererInterface
     public function plugin($name, array $options = null)
     {
         return $this->getHelperPluginManager()->get($name, $options);
+    }
+
+    /**
+     * Overloading: proxy to helpers
+     *
+     * Proxies to the attached plugin manager to retrieve, return, and potentially
+     * execute helpers.
+     *
+     * * If the helper does not define __invoke, it will be returned
+     * * If the helper does define __invoke, it will be called as a functor
+     *
+     * @param  string $method
+     * @param  array $argv
+     *
+     * @return mixed
+     */
+    public function __call($method, $argv)
+    {
+        $helper = $this->plugin($method);
+        if ( is_callable($helper) ) {
+            return call_user_func_array($helper, $argv);
+        }
+
+        return $helper;
     }
 
     /**
