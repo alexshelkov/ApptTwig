@@ -1,7 +1,6 @@
 <?php
 namespace ApptTwig\Extension;
 
-use Twig_SimpleFunction;
 use Twig_Function_Method;
 use Twig_Extension;
 

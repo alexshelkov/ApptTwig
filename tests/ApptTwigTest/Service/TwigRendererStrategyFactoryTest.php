@@ -24,12 +24,13 @@ class TwigRendererStrategyFactoryTest extends PHPUnit_Framework_TestCase
                     return array(
                     );
                 },
-                'appt.twig.renderer' => 'ApptTwig\Service\TwigRendererFactory'
+                'appt.twig.renderer' => 'ApptTwig\Service\TwigRendererFactory',
+                'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
             )
         )));
 
         $strategy = $factory->createService($sm);
 
-        $this->assertSame('ApptTwig\TwigRendererStrategy', get_class($strategy));
+        $this->assertInstanceOf('ApptTwig\TwigRendererStrategy', $strategy);
     }
 }

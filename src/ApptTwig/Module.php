@@ -11,7 +11,6 @@ use Zend\EventManager\EventInterface;
 /**
  * ApptTwig module for ZF2.
  *
- * @codeCoverageIgnore
  */
 class Module implements
     AutoloaderProviderInterface,
@@ -77,7 +76,8 @@ class Module implements
         return array(
             'factories' => array(
                 'appt.twig.renderer' => 'ApptTwig\Service\TwigRendererFactory',
-                'appt.twig.renderer_strategy' => 'ApptTwig\Service\TwigRendererStrategyFactory'
+                'appt.twig.renderer_strategy' => 'ApptTwig\Service\TwigRendererStrategyFactory',
+                'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
             )
         );
     }

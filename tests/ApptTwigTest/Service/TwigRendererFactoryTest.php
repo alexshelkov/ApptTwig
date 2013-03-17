@@ -19,6 +19,7 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
 
         $sm = new ServiceManager(new Config(array(
             'factories' => array (
+                'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
                 'ViewHelperManager' => function() {
                     return new HelperPluginManager;
                 },
@@ -31,7 +32,7 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
 
         $renderer = $factory->createService($sm);
 
-        $this->assertSame('ApptTwig\TwigRenderer', get_class($renderer));
+        $this->assertInstanceOf('ApptTwig\TwigRenderer', $renderer);
     }
 
     public function testConfigTemplatePaths()
@@ -40,6 +41,7 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
 
         $sm = new ServiceManager(new Config(array(
             'factories' => array (
+                'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
                 'ViewHelperManager' => function() {
                     return new HelperPluginManager;
                 },
@@ -47,7 +49,10 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
                     return array(
                         'appt' => array(
                             'twig' => array(
-                                'template_path_stack' => array(__DIR__ . '/../_templates')
+                                'template_path_stack' => array(__DIR__ . '/../_templates'),
+                                'template_map' => array(
+                                    'custom_test_name' => __DIR__ . '/../_templates/test.twig',
+                                ),
                             )
                         )
                     );
@@ -61,7 +66,14 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
         $model->setTemplate('empty');
 
         $content = $renderer->render($model);
-        $this->assertRegexp('/\s*Empty view\s*/s', $content);
+        $this->assertContains('Empty view', $content);
+
+        $model = new ViewModel();
+        $model->setTemplate('test');
+        $model->setVariable('bar', 'bar');
+
+        $content = $renderer->render($model);
+        $this->assertContains('foo bar baz', $content);
     }
 
     public function testConfigExtensionManager()
@@ -70,6 +82,7 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
 
         $sm = new ServiceManager(new Config(array(
             'factories' => array (
+                'appt.twig.resolver' => 'ApptTwig\Service\TwigResolverFactory',
                 'ViewHelperManager' => function() {
                     return new HelperPluginManager;
                 },
@@ -95,6 +108,6 @@ class TwigRendererFactoryTest extends PHPUnit_Framework_TestCase
 
         $renderer = $factory->createService($sm);
 
-        $this->assertRegExp('#Zend view helpers &lt;br&gt;#s', $renderer->render('zend_view_helpers'));
+        $this->assertContains('Zend view helpers &lt;br&gt', $renderer->render('zend_view_helpers'));
     }
 }

@@ -161,7 +161,7 @@ class TwigRendererTest extends PHPUnit_Framework_TestCase
         $model->setTemplate('empty');
 
         $content = $this->renderer->render($model);
-        $this->assertRegexp('/\s*Empty view\s*/s', $content);
+        $this->assertContains('Empty view', $content);
     }
 
     /**
@@ -189,7 +189,7 @@ class TwigRendererTest extends PHPUnit_Framework_TestCase
         $model->setVariable('bar', 'bar');
 
         $content = $this->renderer->render($model);
-        $this->assertRegexp('/\s*foo bar baz\s*/s', $content);
+        $this->assertContains('foo bar baz', $content);
     }
 
     /**
@@ -206,7 +206,7 @@ class TwigRendererTest extends PHPUnit_Framework_TestCase
         $model->setTemplate('empty');
 
         $content = $this->renderer->render($model);
-        $this->assertRegexp('/\s*Empty view\s*/s', $content);
+        $this->assertContains('Empty view', $content);
         $helper  = $this->renderer->getHelperPluginManager()->get('view_model');
         $this->assertTrue($helper->hasCurrent());
         $this->assertSame($model, $helper->getCurrent());

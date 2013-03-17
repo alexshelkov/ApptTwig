@@ -23,58 +23,18 @@ use ApptTwig\ExtensionPluginManager;
 class TwigRendererFactory implements FactoryInterface
 {
     /**
-     * Returns default resolver for Twig.
-     *
-     * @param ApptTwig $options
-     * @return TwigResolver
-     */
-    protected function getResolver(ApptTwig $options)
-    {
-        $resolver = new TwigResolver();
-
-        $resolver->attach(new TemplateMapResolver($options->getTemplateMap()));
-
-        $templatePathStack = new TemplatePathStack();
-        $templatePathStack->setDefaultSuffix($options->getDefaultTemplateSuffix());
-        $templatePathStack->addPaths($options->getTemplatePathStack());
-        $resolver->attach($templatePathStack);
-
-        return $resolver;
-    }
-
-    /**
-     * Returns an options from config file.
-     *
-     * @param $config
-     * @return ApptTwig
-     */
-    protected function getOptionsFromArray(array $config)
-    {
-        if ( isset($config['appt']['twig']) && is_array($config['appt']['twig']) ) {
-            $config = $config['appt']['twig'];
-        } else {
-            $config = array();
-        }
-
-        $options = new ApptTwig($config);
-
-        return $options;
-    }
-
-    /**
      * @param ServiceLocatorInterface $serviceLocator
      * @return TwigRenderer
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config = $serviceLocator->get('Config');
-        $options = $this->getOptionsFromArray($config);
+        $options = ApptTwig::init($serviceLocator);
 
         $twigRenderer = new TwigRenderer;
 
         $twigRenderer->setEngineOptions($options->getEngineOptions());
 
-        $resolver = $this->getResolver($options);
+        $resolver = $serviceLocator->get('appt.twig.resolver');
         $twigRenderer->setResolver($resolver);
 
         $twigRenderer->setHelperPluginManager($serviceLocator->get('ViewHelperManager'));

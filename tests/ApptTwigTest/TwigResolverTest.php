@@ -34,7 +34,7 @@ class TwigResolverTest extends PHPUnit_Framework_TestCase
 
     public function testResolverGetSource()
     {
-        $this->assertRegExp('#\s*Empty view\s*#s', $this->resolver->getSource('empty'));
+        $this->assertContains('Empty view', $this->resolver->getSource('empty'));
     }
 
     public function testResolverGetCacheKey()

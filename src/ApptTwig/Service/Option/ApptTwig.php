@@ -3,6 +3,8 @@ namespace ApptTwig\Service\Option;
 
 use Zend\Stdlib\AbstractOptions;
 
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 class ApptTwig extends AbstractOptions
 {
     /**
@@ -108,5 +110,31 @@ class ApptTwig extends AbstractOptions
     public function getExtensionManager()
     {
         return $this->extensionManager;
+    }
+
+    /**
+     * Create options using service locator.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return ApptTwig
+     */
+    static public function init(ServiceLocatorInterface $serviceLocator)
+    {
+        if ( ! $serviceLocator->has('Config') ) {
+            return new ApptTwig(array());
+        }
+
+        $config = $serviceLocator->get('Config');
+
+        if ( isset($config['appt']['twig']) && is_array($config['appt']['twig']) ) {
+            $config = $config['appt']['twig'];
+        } else {
+            $config = array();
+        }
+
+        $options = new ApptTwig($config);
+
+        return $options;
     }
 }
