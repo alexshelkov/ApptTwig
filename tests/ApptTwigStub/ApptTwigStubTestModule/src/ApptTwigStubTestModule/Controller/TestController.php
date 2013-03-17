@@ -18,4 +18,12 @@ class TestController extends AbstractActionController
     public function testLayoutAction()
     {
     }
+
+    public function testSuffixAction()
+    {
+    }
+
+    public function testZendHelpersAction()
+    {
+    }
 }

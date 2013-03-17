@@ -72,4 +72,38 @@ class AuthenticationControllerTest extends AbstractHttpControllerTestCase
 
         $this->assertRegExp('#Twig layout.*testLayout#s', $content);
     }
+
+    public function testSuffix()
+    {
+        Module::$config = array(
+            'default_template_suffix' => 'twg',
+            'template_path_stack' => array(
+                TEST_STUB . '/ApptTwigStubTestModule/view/'
+            )
+        );
+
+        $this->dispatch('testSuffix');
+
+        $content = $this->getResponse()->getContent();
+
+        $this->assertRegExp('#Php layout.*testSuffix#s', $content);
+    }
+
+    public function testZendHelpers()
+    {
+        Module::$config = array(
+            'template_map' => array(
+                'layout/layout' => TEST_STUB . '/ApptTwigStubTestModule/view/appt-twig-stub-test-module/test/layout.twig'
+            ),
+            'template_path_stack' => array(
+                TEST_STUB . '/ApptTwigStubTestModule/view/'
+            )
+        );
+
+        $this->dispatch('testZendHelpers');
+
+        $content = $this->getResponse()->getContent();
+
+        $this->assertRegExp('#Twig layout.*testZendHelpers.*<title>test</title>.*appt-twig-stub-test-module/test/test-zend-helpers#s', $content);
+    }
 }

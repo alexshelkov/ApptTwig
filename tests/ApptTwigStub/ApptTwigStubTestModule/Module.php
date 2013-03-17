@@ -43,6 +43,26 @@ class Module
                             )
                         ),
                     ),
+                    'testSuffix' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => 'testSuffix',
+                            'defaults' => array(
+                                'controller' => 'ApptTwigStubTestModule\Controller\Test',
+                                'action' => 'testSuffix',
+                            )
+                        ),
+                    ),
+                    'testZendHelpers' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => 'testZendHelpers',
+                            'defaults' => array(
+                                'controller' => 'ApptTwigStubTestModule\Controller\Test',
+                                'action' => 'testZendHelpers',
+                            )
+                        ),
+                    ),
                 )
             ),
             'view_manager' => array(
