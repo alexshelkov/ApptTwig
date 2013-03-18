@@ -50,7 +50,7 @@ return array(
  'appt' => array(
         'twig' => array(
             'engine_options' => array(
-                'debug' => true, // turn on degug mode
+                'debug' => true, // turn on debug mode
             )
         ),
     ),
@@ -76,10 +76,10 @@ All extensions must implement Twig_ExtensionInterface.
 ##### Provided services
 ApptTwig provide following services:
 
-__appt.twig.renderer__ -- renderer service capapabile with PhpRenderer;  
+__appt.twig.renderer__ -- renderer service compatible with PhpRenderer;
 __appt.twig.renderer_strategy__ -- renderer strategy;  
-__appt.twig.resolver__ -- resolver service extend Zend\View\Resolver\AggregateResolver and used for resolving templetes;    
-__appt.twig.extension_manager__ -- used for managine twig extensions, it extend Zend\ServiceManager\AbstractPluginManager.
+__appt.twig.resolver__ -- resolver service extend Zend\View\Resolver\AggregateResolver and used for resolving templates;
+__appt.twig.extension_manager__ -- used for managing twig extensions, it extend Zend\ServiceManager\AbstractPluginManager.
 
 ##### Rendering
 When you setup resolvers in your config ApptTwig is ready for rendering view templates as it was regular PhpRenderer. All you need is create templates in your view directory.
