@@ -37,7 +37,7 @@ return array(
             ),
             'template_map' => array(
                 'layout/layout' => 'dir/layout.twig',
-                'error' => __DIR__ . 'dir/error/.twig',
+                'error' => __DIR__ . 'dir/error.twig',
             ),
         ),
     ),
